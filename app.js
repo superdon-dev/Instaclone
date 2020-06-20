@@ -1,18 +1,18 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const authRoutes = require("./routes/auth");
+
 const { MONGO_URL } = require("./env");
 const app = express();
-const PORT = 3000;
+const PORT = 5000;
+
+app.use(express.json());
+app.use(authRoutes);
 
 mongoose.connect(MONGO_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-
-app.get("/", (req, res) => {
-  res.send("hi");
-});
-
 app.listen(PORT, () => {
   console.log("Server is running...");
 });

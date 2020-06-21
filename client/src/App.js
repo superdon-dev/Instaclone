@@ -1,7 +1,24 @@
 import React from "react";
+import Navbar from "./components/Navbar";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
-function App() {
-  return <h1>Hello</h1>;
-}
+import Home from "./containers/Home";
+import Profile from "./containers/Profile";
+import Login from "./containers/Login";
+import Signup from "./containers/Signup";
+
+import "./App.css";
+
+const App = () => {
+  return (
+    <Router>
+      <Navbar />
+      <Route path="/" exact component={Home} />
+      <Route path="/login" component={Login} />
+      <Route path="/signup" component={Signup} />
+      <Route path="/profile" component={Profile} />
+    </Router>
+  );
+};
 
 export default App;

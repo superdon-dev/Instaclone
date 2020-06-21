@@ -38,7 +38,7 @@ router.post("/signup", (req, res) => {
     });
 });
 
-router.post("/signin", (req, res) => {
+router.post("/login", (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return res.status(422).json({ error: "Please add email and password." });

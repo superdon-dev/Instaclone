@@ -1,4 +1,5 @@
 import React from "react";
+import "./Home.css";
 
 const Home = () => {
   return (
@@ -11,7 +12,7 @@ const Home = () => {
           />
         </div>
         <div className="card-content">
-          <i class="material-icons">favorite</i>
+          <i className="material-icons">favorite</i>
           <p>this is amazing post</p>
           <input type="text" placeholder="Add a comment" />
         </div>

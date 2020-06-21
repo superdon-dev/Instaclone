@@ -6,6 +6,7 @@ import Home from "./containers/Home";
 import Profile from "./containers/Profile";
 import Login from "./containers/Login";
 import Signup from "./containers/Signup";
+import CreatePost from "./containers/CreatePost";
 
 import "./App.css";
 
@@ -17,6 +18,7 @@ const App = () => {
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
       <Route path="/profile" component={Profile} />
+      <Route path="/create-post" component={CreatePost} />
     </Router>
   );
 };

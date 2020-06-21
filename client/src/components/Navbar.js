@@ -13,6 +13,9 @@ const Navbar = () => {
             <NavLink to="/">Home</NavLink>
           </li>
           <li>
+            <NavLink to="/create-post">Create Post</NavLink>
+          </li>
+          <li>
             <NavLink to="/profile">Profile</NavLink>
           </li>
           <li>

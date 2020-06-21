@@ -1,7 +1,6 @@
-.row {
-  display: flex;
-  flex-direction: row;
-}
 .card-content {
   padding: 20px;
+}
+.material-icons {
+  color: red;
 }

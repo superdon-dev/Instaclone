@@ -1,0 +1,9 @@
+.card {
+  max-width: 500px;
+  margin: auto;
+  margin-top: 10vh;
+}
+.card-auth {
+  padding: 40px;
+  text-align: center;
+}

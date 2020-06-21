@@ -1,3 +1,27 @@
+@import url("https://fonts.googleapis.com/css2?family=Grand+Hotel&display=swap");
 a {
   color: black !important;
+}
+
+.brand-logo {
+  font-family: "Grand Hotel", cursive;
+}
+
+/* form elements */
+.btn {
+  background-color: rgb(72, 119, 248);
+}
+.btn:hover,
+.btn:focus {
+  background-color: rgb(46, 97, 240);
+}
+.input-field input:focus {
+  border-bottom: 1px solid rgb(72, 119, 248) !important;
+  box-shadow: 0 1px 0 0 rgb(72, 119, 248) !important;
+}
+
+@media only screen and (min-width: 768px) {
+  .brand-logo {
+    margin-left: 1rem;
+  }
 }

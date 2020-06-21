@@ -6,11 +6,11 @@ const Navbar = () => {
     <nav>
       <div className="nav-wrapper white">
         <a href="#" className="brand-logo">
-          Logo
+          Instaclone
         </a>
         <ul id="nav-mobile" className="right hide-on-med-and-down">
           <li>
-            <NavLink to="/">Login</NavLink>
+            <NavLink to="/">Home</NavLink>
           </li>
           <li>
             <NavLink to="/profile">Profile</NavLink>

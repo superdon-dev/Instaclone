@@ -1,8 +1,15 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const requireLogin = require("../middlewares/requireLogin");
+const { JWT_SECRET } = require("../env");
 const router = express.Router();
 
 const User = require("../models/user");
+
+router.get("/protected", requireLogin, (req, res) => {
+  res.send("Hello User");
+});
 
 router.post("/signup", (req, res) => {
   const { name, email, password } = req.body;
@@ -44,7 +51,8 @@ router.post("/signin", (req, res) => {
       .compare(password, savedUser.password)
       .then((doMatch) => {
         if (doMatch) {
-          res.json({ message: "Successfully signed in." });
+          const token = jwt.sign({ _id: savedUser._id }, JWT_SECRET);
+          res.json({ token });
         } else {
           return res.status(422).json({ error: "Incorrect credentials." });
         }
@@ -53,9 +61,6 @@ router.post("/signin", (req, res) => {
         console.log(err);
       });
   });
-});
-router.get("/", (req, res) => {
-  res.send({ message: "Welcome" });
 });
 
 module.exports = router;

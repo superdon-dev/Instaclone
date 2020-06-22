@@ -1,9 +1,15 @@
 import React, { useContext } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import { UserContext } from "../App";
 
 const Navbar = () => {
   const { state, dispatch } = useContext(UserContext);
+  const history = useHistory();
+  const logout = () => {
+    localStorage.clear();
+    dispatch({ type: "CLEAR" });
+    history.push("/login");
+  };
   const renderList = () => {
     if (state) {
       return [
@@ -15,6 +21,9 @@ const Navbar = () => {
         </li>,
         <li key="profile">
           <NavLink to="/profile">Profile</NavLink>
+        </li>,
+        <li key="logout">
+          <a onClick={logout}>Logout</a>
         </li>,
       ];
     } else {

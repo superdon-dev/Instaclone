@@ -35,7 +35,7 @@ const Login = () => {
       });
   };
   return (
-    <div class="card">
+    <div className="card">
       <div className="card-auth input-field">
         <h4>Login:</h4>
         <input

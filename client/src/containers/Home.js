@@ -33,7 +33,7 @@ const Home = () => {
         console.log(result);
         //update elements
         const newData = data.map((item) => {
-          if (item._id == result._id) {
+          if (item._id === result._id) {
             return result;
           } else {
             return item;
@@ -46,46 +46,117 @@ const Home = () => {
       });
   };
 
+  const commentSend = (text, postId) => {
+    fetch("/comment", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+      body: JSON.stringify({
+        postId,
+        text,
+      }),
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        const newData = data.map((item) => {
+          if (item._id === result._id) {
+            return result;
+          } else {
+            return item;
+          }
+        });
+        setData(newData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const deletePost = (postId) => {
+    fetch(`/delete-post/${postId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        const newData = data.filter((item) => {
+          return item._id !== result._id;
+        });
+        setData(newData);
+      });
+  };
+
   return (
     <div className="row-center">
       <div className="column">
-        {data
-          ? data.map((item) => {
-              return (
-                <div className="card card-post" key={item._id}>
-                  <div className="card-image">
-                    <img src={item.url} alt={`Img ${item._id}`} />
-                  </div>
-                  <div className="card-content">
-                    <i className="material-icons" style={{ color: "red" }}>
-                      favorite
-                    </i>
-                    {!item.likes.includes(state._id) ? (
+        {data.map((item) => {
+          return (
+            <div className="card card-post" key={item._id}>
+              <div className="card-image">
+                <img src={item.url} alt={`Img ${item._id}`} />
+              </div>
+              <div className="card-content">
+                <h5>
+                  <strong>
+                    {item.postedBy.name}
+                    {item.postedBy._id === state._id && (
                       <i
                         className="material-icons"
-                        onClick={() => impressionSend(item._id, "like")}
+                        onClick={() => deletePost(item._id)}
                       >
-                        thumb_up
-                      </i>
-                    ) : (
-                      <i
-                        className="material-icons"
-                        onClick={() => impressionSend(item._id, "dislike")}
-                      >
-                        thumb_down
+                        delete
                       </i>
                     )}
-                    <h5>{item.likes.length} likes</h5>
-                    <h5>
-                      <strong>{item.postedBy.name}</strong>
-                    </h5>
-                    <h5>{item.description}</h5>
-                    <input type="text" placeholder="Add a comment" />
-                  </div>
-                </div>
-              );
-            })
-          : "No posts found."}
+                  </strong>
+                </h5>
+                <i className="material-icons" style={{ color: "red" }}>
+                  favorite
+                </i>
+                {!item.likes.includes(state._id) ? (
+                  <i
+                    className="material-icons"
+                    onClick={() => impressionSend(item._id, "like")}
+                  >
+                    thumb_up
+                  </i>
+                ) : (
+                  <i
+                    className="material-icons"
+                    onClick={() => impressionSend(item._id, "dislike")}
+                  >
+                    thumb_down
+                  </i>
+                )}
+                <h5>{item.likes.length} likes</h5>
+                <h5>{item.description}</h5>
+                {item.comments.map((record) => {
+                  return (
+                    <h6 key={`Com ${record._id}`}>
+                      <span>
+                        <strong>{record.postedBy.name}</strong>{" "}
+                      </span>
+                      {record.text}
+                    </h6>
+                  );
+                })}
+                <form
+                  action=""
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    commentSend(e.target[0].value, item._id);
+                    e.target[0].value = "";
+                  }}
+                >
+                  <input type="text" placeholder="Add a comment" />
+                </form>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

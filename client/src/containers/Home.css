@@ -1,3 +1,6 @@
+.row-center {
+  align-items: center;
+}
 .card-content {
   padding: 20px;
 }

@@ -4,7 +4,7 @@ const router = express.Router();
 
 const Post = require("../models/post");
 
-router.get("/posts", (req, res) => {
+router.get("/posts", requireLogin, (req, res) => {
   Post.find()
     .populate("postedBy", "_id name")
     .then((posts) => {
@@ -16,12 +16,12 @@ router.get("/posts", (req, res) => {
 });
 
 router.post("/create-post", requireLogin, (req, res) => {
-  const { title, body, photo } = req.body;
-  if (!title || !body) {
+  const { description, url } = req.body;
+  if (!description || !url) {
     res.status(422).json({ error: "Please add all the fields." });
   }
   req.user.password = undefined;
-  const post = new Post({ title, body, photo, postedBy: req.user });
+  const post = new Post({ description, url, postedBy: req.user });
   post
     .save()
     .then((result) => {

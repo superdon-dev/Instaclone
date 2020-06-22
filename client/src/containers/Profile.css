@@ -4,10 +4,11 @@
   flex-wrap: wrap;
   width: 100%;
 }
-.column {
+.column-left {
   display: flex;
   flex-direction: column;
-  margin: 18px 0px;
+  align-items: left !important;
+  margin: 18px auto;
   flex-basis: 100%;
   flex: 1;
 }
@@ -22,7 +23,7 @@
 .column-links {
   display: flex;
   justify-content: space-between;
-  width: 60%;
+  width: 50%;
 }
 .gallery {
   width: 80%;

@@ -3,6 +3,20 @@ a {
   color: black !important;
 }
 
+.row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+}
+.column {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  align-items: center;
+  flex-basis: 100%;
+  flex: 1;
+}
 .brand-logo {
   font-family: "Grand Hotel", cursive;
 }
@@ -19,7 +33,10 @@ a {
   border-bottom: 1px solid rgb(72, 119, 248) !important;
   box-shadow: 0 1px 0 0 rgb(72, 119, 248) !important;
 }
-
+.card-post {
+  max-width: 800px;
+  margin: 3rem;
+}
 @media only screen and (min-width: 768px) {
   .brand-logo {
     margin-left: 1rem;

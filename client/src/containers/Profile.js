@@ -12,7 +12,7 @@ const Profile = () => {
             alt="Profile"
           />
         </div>
-        <div className="column">
+        <div className="column-left">
           <h4>Superdon</h4>
           <div className="column-links">
             <h6>40 posts</h6>

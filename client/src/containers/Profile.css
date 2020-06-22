@@ -35,4 +35,7 @@
 .gallery-item {
   width: 30%;
   padding: 10px;
+  object-fit: cover;
+  width: 230px;
+  height: 230px;
 }

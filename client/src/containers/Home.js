@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "../App";
+import { Link } from "react-router-dom";
 import "./Home.css";
 
 const Home = () => {
@@ -102,7 +103,9 @@ const Home = () => {
               <div className="card-content">
                 <h5>
                   <strong>
-                    {item.postedBy.name}
+                    <Link to={`/profile/${item.postedBy._id}`}>
+                      {item.postedBy.name}
+                    </Link>
                     {item.postedBy._id === state._id && (
                       <i
                         className="material-icons"

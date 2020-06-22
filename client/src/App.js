@@ -12,6 +12,7 @@ import Profile from "./containers/Profile";
 import Login from "./containers/Login";
 import Signup from "./containers/Signup";
 import CreatePost from "./containers/CreatePost";
+import UserProfile from "./containers/UserProfile";
 import { reducer, initialState } from "./reducers/userReducer";
 import "./App.css";
 
@@ -33,7 +34,8 @@ const Routing = () => {
       <Route path="/" exact component={Home} />
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
-      <Route path="/profile" component={Profile} />
+      <Route path="/profile/:userId" component={UserProfile} />
+      <Route path="/profile" exact component={Profile} />
       <Route path="/create-post" component={CreatePost} />
     </Switch>
   );

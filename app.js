@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const authRoutes = require("./routes/auth");
 const postRoutes = require("./routes/post");
+const userRoutes = require("./routes/user");
 
 const { MONGO_URL } = require("./env");
 const app = express();
@@ -15,6 +16,7 @@ mongoose.connect(MONGO_URL, {
 app.use(express.json());
 app.use(authRoutes);
 app.use(postRoutes);
+app.use(userRoutes);
 
 app.listen(PORT, () => {
   console.log("Server is running...");

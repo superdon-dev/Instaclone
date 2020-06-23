@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { ObjectID, ObjectId } = require("bson");
 const Schema = mongoose.Schema;
 
 const userSchema = new mongoose.Schema({
@@ -14,6 +15,8 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  followers: [{ type: ObjectId, ref: "User" }],
+  following: [{ type: ObjectId, ref: "User" }],
 });
 
 module.exports = mongoose.model("User", userSchema);

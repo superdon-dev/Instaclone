@@ -29,9 +29,9 @@ const Profile = () => {
         <div className="column-left">
           <h4>{state ? state.name : "loading"}</h4>
           <div className="column-links">
-            <h6>40 posts</h6>
-            <h6>40 followers</h6>
-            <h6>40 following</h6>
+            <h6>{mypics.length} posts</h6>
+            <h6>{state ? state.followers.length : 0} followers</h6>
+            <h6>{state ? state.following.length : 0} following</h6>
           </div>
         </div>
       </div>

@@ -7,6 +7,7 @@ const Post = require("../models/post");
 router.get("/posts", requireLogin, (req, res) => {
   Post.find()
     .populate("postedBy", "_id name")
+    .sort("-createdAt")
     .then((posts) => {
       res.json({ posts });
     })
@@ -120,6 +121,7 @@ router.delete("/delete-post/:postId", requireLogin, (req, res) => {
 router.get("/sub-posts", requireLogin, (req, res) => {
   Post.find({ postedBy: { $in: req.user.following } })
     .populate("postedBy", "_id name")
+    .sort("-createdAt")
     .then((posts) => {
       res.json({ posts });
     })

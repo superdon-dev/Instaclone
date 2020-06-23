@@ -96,6 +96,7 @@ const Profile = () => {
           {mypics.map((item) => {
             return (
               <img
+                key={item._id}
                 className="gallery-item"
                 src={item.url}
                 alt={`Img ${item._id}`}

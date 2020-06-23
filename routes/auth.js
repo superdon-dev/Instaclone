@@ -12,7 +12,7 @@ router.get("/protected", requireLogin, (req, res) => {
 });
 
 router.post("/signup", (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, image } = req.body;
   if (!email || !password || !name) {
     return res.status(422).json({ error: "Please add all fields." });
   }
@@ -22,7 +22,7 @@ router.post("/signup", (req, res) => {
         return res.status(422).json({ error: "User already exists." });
       }
       bcrypt.hash(password, 12).then((hashedPassword) => {
-        const user = new User({ email, name, password: hashedPassword });
+        const user = new User({ email, name, password: hashedPassword, image });
         user
           .save()
           .then((user) => {
@@ -52,8 +52,11 @@ router.post("/login", (req, res) => {
       .then((doMatch) => {
         if (doMatch) {
           const token = jwt.sign({ _id: savedUser._id }, JWT_SECRET);
-          const { _id, name, email, followers, following } = savedUser;
-          res.json({ token, user: { _id, name, email, followers, following } });
+          const { _id, name, email, followers, following, image } = savedUser;
+          res.json({
+            token,
+            user: { _id, name, email, followers, following, image },
+          });
         } else {
           return res.status(422).json({ error: "Incorrect credentials." });
         }

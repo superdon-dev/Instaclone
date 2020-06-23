@@ -17,6 +17,11 @@ const userSchema = new mongoose.Schema({
   },
   followers: [{ type: ObjectId, ref: "User" }],
   following: [{ type: ObjectId, ref: "User" }],
+  image: {
+    type: String,
+    default:
+      "https://res.cloudinary.com/de2hosdqv/image/upload/v1592908362/no-user-image-icon-23_iddbyi.png",
+  },
 });
 
 module.exports = mongoose.model("User", userSchema);

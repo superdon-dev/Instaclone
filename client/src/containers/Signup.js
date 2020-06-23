@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink, useHistory } from "react-router-dom";
 import M from "materialize-css";
 import "./Signup.css";
@@ -8,8 +8,32 @@ const Signup = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [image, setImage] = useState("");
+  const [url, setUrl] = useState("");
 
-  const postData = () => {
+  useEffect(() => {
+    if (url) {
+      uploadFields();
+    }
+  }, [url]);
+
+  const uploadImage = () => {
+    const data = new FormData();
+    data.append("file", image);
+    data.append("upload_preset", "instaclone");
+    data.append("cloud_name", "de2hosdqv");
+    fetch("https://api.cloudinary.com/v1_1/de2hosdqv/image/upload", {
+      method: "POST",
+      body: data,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setUrl(data.url);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const uploadFields = () => {
     fetch("/signup", {
       method: "POST",
       headers: {
@@ -19,6 +43,7 @@ const Signup = () => {
         name,
         password,
         email,
+        image: url,
       }),
     })
       .then((res) => res.json())
@@ -31,6 +56,15 @@ const Signup = () => {
         }
       });
   };
+
+  const postData = () => {
+    if (image) {
+      uploadImage();
+    } else {
+      uploadFields();
+    }
+  };
+
   return (
     <div className="card">
       <div className="card-auth input-field">
@@ -50,6 +84,15 @@ const Signup = () => {
           placeholder="Password"
           onChange={(e) => setPassword(e.target.value)}
         />
+        <div className="file-field input-field">
+          <div className="btn">
+            <span>Upload image</span>
+            <input type="file" onChange={(e) => setImage(e.target.files[0])} />
+          </div>
+          <div className="file-path-wrapper">
+            <input className="file-path validate" type="text" />
+          </div>
+        </div>
         <button className="btn waves-effect" onClick={postData}>
           SignUp
         </button>

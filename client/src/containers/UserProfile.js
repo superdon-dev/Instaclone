@@ -7,7 +7,9 @@ const Profile = () => {
   const { userId } = useParams();
   const { state, dispatch } = useContext(UserContext);
   const [userProfile, setUserProfile] = useState(null);
-  const [showFollow, setShowFollow] = useState(true);
+  const [showFollow, setShowFollow] = useState(
+    state ? !state.following.includes(userId) : true
+  );
 
   useEffect(() => {
     fetch(`/user/${userId}`, {
@@ -93,7 +95,7 @@ const Profile = () => {
         <div className="column">
           <img
             className="column-picture"
-            src="https://avatars3.githubusercontent.com/u/36360335?s=460&u=60efbfa1383ca82470a4333e8cfd2cd82dfb8ff3&v=4"
+            src={userProfile.user.image}
             alt="Profile"
           />
         </div>

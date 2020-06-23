@@ -37,6 +37,11 @@ a {
   max-width: 800px;
   margin: 3rem;
 }
+
+.material-icons:hover {
+  cursor: pointer;
+}
+
 @media only screen and (min-width: 768px) {
   .brand-logo {
     margin-left: 1rem;

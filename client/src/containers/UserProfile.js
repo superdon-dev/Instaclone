@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { UserContext } from "../App";
+import Loading from "../components/Loading";
 import "./Profile.css";
 import { userParams, useParams } from "react-router-dom";
 
@@ -139,7 +140,11 @@ const Profile = () => {
       </div>
     </React.Fragment>
   ) : (
-    <h2>Loading...</h2>
+    <div className="row">
+      <div className="column">
+        <Loading />
+      </div>
+    </div>
   );
 };
 

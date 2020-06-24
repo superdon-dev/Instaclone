@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
+import Loading from "../components/Loading";
 import { UserContext } from "../App";
 import "./Profile.css";
 
@@ -7,6 +8,8 @@ const Profile = () => {
   const [mypics, setPics] = useState([]);
   const [image, setImage] = useState("");
   const [url, setUrl] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     fetch("/my-posts", {
       headers: {
@@ -16,6 +19,7 @@ const Profile = () => {
       .then((res) => res.json())
       .then((result) => {
         setPics(result.posts);
+        setIsLoading(false);
       });
   }, []);
   useEffect(() => {
@@ -50,62 +54,75 @@ const Profile = () => {
               dispatch({ type: "UPDATE_IMAGE", payload: result.image });
             });
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }, [image]);
 
   const updateImage = (file) => {
     setImage(file);
   };
-
-  return (
-    <React.Fragment>
-      <div className="row">
-        <div className="column">
-          <img
-            className="column-picture"
-            src={state ? state.image : "loading"}
-            alt="Profile"
-          />
-        </div>
-        <div className="column-left">
-          <h4>{state ? state.name : "loading"}</h4>
-          <div className="column-links">
-            <h6>{mypics.length} posts</h6>
-            <h6>{state ? state.followers.length : 0} followers</h6>
-            <h6>{state ? state.following.length : 0} following</h6>
+  let content = <Loading />;
+  if (!isLoading) {
+    content = (
+      <React.Fragment>
+        <div className="row">
+          <div className="column">
+            <img
+              className="column-picture"
+              src={state ? state.image : "loading"}
+              alt="Profile"
+            />
           </div>
 
-          <div className="file-field input-field">
-            <div className="btn">
-              <span>Upload image</span>
-              <input
-                type="file"
-                onChange={(e) => updateImage(e.target.files[0])}
-              />
+          <div className="column-left">
+            <h4>{state ? state.name : "loading"}</h4>
+
+            <div className="column-links">
+              <h6>{mypics.length} posts</h6>
+              <h6>{state ? state.followers.length : 0} followers</h6>
+              <h6>{state ? state.following.length : 0} following</h6>
             </div>
+
+            <div className="file-field input-field">
+              <div className="btn">
+                <span>Upload image</span>
+                <input
+                  type="file"
+                  onChange={(e) => updateImage(e.target.files[0])}
+                />
+              </div>
+            </div>
+
             <div className="file-path-wrapper">
               <input className="file-path validate" type="text" />
             </div>
           </div>
         </div>
-      </div>
-      <hr />
-      <div className="row">
-        <div className="gallery">
-          {mypics.map((item) => {
-            return (
-              <img
-                key={item._id}
-                className="gallery-item"
-                src={item.url}
-                alt={`Img ${item._id}`}
-              />
-            );
-          })}
+        <hr />
+        <div className="row">
+          <div className="gallery">
+            {mypics.map((item) => {
+              return (
+                <img
+                  key={item._id}
+                  className="gallery-item"
+                  src={item.url}
+                  alt={`Img ${item._id}`}
+                />
+              );
+            })}
+          </div>
         </div>
-      </div>
-    </React.Fragment>
+      </React.Fragment>
+    );
+  }
+
+  return (
+    <div className="row">
+      <div className="column">{content}</div>
+    </div>
   );
 };
 

@@ -1,4 +1,5 @@
 import React, { useContext, useRef, useEffect, useState } from "react";
+import Loading from "../components/Loading";
 import { NavLink, useHistory, Link } from "react-router-dom";
 import { UserContext } from "../App";
 import M from "materialize-css";
@@ -8,6 +9,7 @@ const Navbar = () => {
   const [search, setSearch] = useState("");
   const [users, setUsers] = useState([]);
   const { state, dispatch } = useContext(UserContext);
+  const [modalLoading, setModalLoading] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
@@ -22,6 +24,7 @@ const Navbar = () => {
 
   const fetchUsers = (query) => {
     setSearch(query);
+    setModalLoading(true);
     fetch("/search-users", {
       method: "POST",
       headers: {
@@ -33,6 +36,7 @@ const Navbar = () => {
     })
       .then((res) => res.json())
       .then((results) => {
+        setModalLoading(false);
         setUsers(results.users);
       });
   };
@@ -91,26 +95,34 @@ const Navbar = () => {
             value={search}
             onChange={(e) => fetchUsers(e.target.value)}
           />
-          <div className="collection">
-            {users.map((user) => {
-              return (
-                <Link
-                  key={`Item ${user.name}`}
-                  to={
-                    user._id !== state._id ? `/profile/${user._id}` : "profile"
-                  }
-                  className="collection-item"
-                  onClick={() => {
-                    M.Modal.getInstance(searchModal.current).close();
-                    setSearch("");
-                    setUsers([]);
-                  }}
-                >
-                  {user.name}
-                </Link>
-              );
-            })}
-          </div>
+          {!modalLoading ? (
+            <div className="collection">
+              {users.map((user) => {
+                return (
+                  <Link
+                    key={`Item ${user.name}`}
+                    to={
+                      user._id !== state._id
+                        ? `/profile/${user._id}`
+                        : "profile"
+                    }
+                    className="collection-item"
+                    onClick={() => {
+                      M.Modal.getInstance(searchModal.current).close();
+                      setSearch("");
+                      setUsers([]);
+                    }}
+                  >
+                    {user.name}
+                  </Link>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="column">
+              <Loading />
+            </div>
+          )}
           <button className="btn modal-close waves-effect">Close</button>
         </div>
       </div>

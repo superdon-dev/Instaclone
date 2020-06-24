@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "../App";
 import { Link } from "react-router-dom";
+import Loading from "../components/Loading";
 import "./Home.css";
 
 const Home = () => {
   const [data, setData] = useState([]);
   const { state, dispatch } = useContext(UserContext);
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     fetch("/posts", {
       headers: {
@@ -15,6 +17,7 @@ const Home = () => {
       .then((res) => res.json())
       .then((result) => {
         setData(result.posts);
+        setIsLoading(false);
       });
   }, []);
 
@@ -91,76 +94,78 @@ const Home = () => {
       });
   };
 
-  return (
-    <div className="row-center">
-      <div className="column">
-        {data.map((item) => {
-          return (
-            <div className="card card-post" key={item._id}>
-              <div className="card-image">
-                <img src={item.url} alt={`Img ${item._id}`} />
-              </div>
-              <div className="card-content">
-                <h5>
-                  <strong>
-                    <Link to={`/profile/${item.postedBy._id}`}>
-                      {item.postedBy.name}
-                    </Link>
-                    {item.postedBy._id === state._id && (
-                      <i
-                        className="material-icons"
-                        onClick={() => deletePost(item._id)}
-                      >
-                        delete
-                      </i>
-                    )}
-                  </strong>
-                </h5>
-                <i className="material-icons" style={{ color: "red" }}>
-                  favorite
-                </i>
-                {!item.likes.includes(state._id) ? (
+  let content = <Loading />;
+  if (!isLoading) {
+    content = data.map((item) => {
+      return (
+        <div className="card card-post" key={item._id}>
+          <div className="card-image">
+            <img src={item.url} alt={`Img ${item._id}`} />
+          </div>
+          <div className="card-content">
+            <h5>
+              <strong>
+                <Link to={`/profile/${item.postedBy._id}`}>
+                  {item.postedBy.name}
+                </Link>
+                {item.postedBy._id === state._id && (
                   <i
                     className="material-icons"
-                    onClick={() => impressionSend(item._id, "like")}
+                    onClick={() => deletePost(item._id)}
                   >
-                    thumb_up
-                  </i>
-                ) : (
-                  <i
-                    className="material-icons"
-                    onClick={() => impressionSend(item._id, "dislike")}
-                  >
-                    thumb_down
+                    delete
                   </i>
                 )}
-                <h5>{item.likes.length} likes</h5>
-                <h5>{item.description}</h5>
-                {item.comments.map((record) => {
-                  return (
-                    <h6 key={`Com ${record._id}`}>
-                      <span>
-                        <strong>{record.postedBy.name}</strong>{" "}
-                      </span>
-                      {record.text}
-                    </h6>
-                  );
-                })}
-                <form
-                  action=""
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    commentSend(e.target[0].value, item._id);
-                    e.target[0].value = "";
-                  }}
-                >
-                  <input type="text" placeholder="Add a comment" />
-                </form>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+              </strong>
+            </h5>
+            <i className="material-icons" style={{ color: "red" }}>
+              favorite
+            </i>
+            {!item.likes.includes(state._id) ? (
+              <i
+                className="material-icons"
+                onClick={() => impressionSend(item._id, "like")}
+              >
+                thumb_up
+              </i>
+            ) : (
+              <i
+                className="material-icons"
+                onClick={() => impressionSend(item._id, "dislike")}
+              >
+                thumb_down
+              </i>
+            )}
+            <h5>{item.likes.length} likes</h5>
+            <h5>{item.description}</h5>
+            {item.comments.map((record) => {
+              return (
+                <h6 key={`Com ${record._id}`}>
+                  <span>
+                    <strong>{record.postedBy.name}</strong>{" "}
+                  </span>
+                  {record.text}
+                </h6>
+              );
+            })}
+            <form
+              action=""
+              onSubmit={(e) => {
+                e.preventDefault();
+                commentSend(e.target[0].value, item._id);
+                e.target[0].value = "";
+              }}
+            >
+              <input type="text" placeholder="Add a comment" />
+            </form>
+          </div>
+        </div>
+      );
+    });
+  }
+  return (
+    <div className="row-center">
+      <div className="column">{content}</div>
     </div>
   );
 };
